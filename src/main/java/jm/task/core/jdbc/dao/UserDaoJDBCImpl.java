@@ -3,11 +3,9 @@ package jm.task.core.jdbc.dao;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 
-import javax.persistence.StoredProcedureQuery;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +17,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void createUsersTable() {
 
-        try (Connection con = Util.ConnectBD()) {
+        try (Connection con = Util.connectBD()) {
             String sql = "CREATE TABLE IF NOT EXISTS `kata1_1_4`.`users` (" +
                     "  `id` INT NOT NULL AUTO_INCREMENT,\n" +
                     "  `name` VARCHAR(123) NULL,\n" +
@@ -36,7 +34,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void dropUsersTable() {
-        try (Connection con = Util.ConnectBD()) {
+        try (Connection con = Util.connectBD()) {
             String sql = "DROP TABLE IF EXISTS `users`";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.execute();
@@ -46,7 +44,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        try (Connection con = Util.ConnectBD()) {
+        try (Connection con = Util.connectBD()) {
             String sql = "INSERT INTO `kata1_1_4`.`users` (`name`, `lastName`, `age`) VALUES (?,?,?)";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1, name);
@@ -60,7 +58,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void removeUserById(long id) {
-        try (Connection con = Util.ConnectBD()) {
+        try (Connection con = Util.connectBD()) {
             String sql = "DELETE FROM `kata1_1_4`.`users` WHERE (`id` = ?)";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setLong(1, id);
@@ -72,7 +70,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
-        try (Connection con = Util.ConnectBD()) {
+        try (Connection con = Util.connectBD()) {
             String sql = "SELECT * FROM kata1_1_4.users";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
@@ -92,7 +90,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void cleanUsersTable() {
-        try (Connection con = Util.ConnectBD()) {
+        try (Connection con = Util.connectBD()) {
             String sql = "TRUNCATE `kata1_1_4`.`users`";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.execute();
